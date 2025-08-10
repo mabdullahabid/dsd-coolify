@@ -12,9 +12,8 @@ from .platform_deployer import PlatformDeployer
 from .plugin_config import PluginConfig
 
 
-# Handle uv projects early, before any framework validation
-def _handle_uv_project_early():
-    """Generate requirements.txt for uv projects before framework validation."""
+def _ensure_requirements_txt_exists():
+    """Generate requirements.txt for uv projects if it doesn't exist."""
     try:
         # Try to get the project root from environment or current directory
         import os
@@ -47,13 +46,13 @@ def _handle_uv_project_early():
         # Silently fail, let the framework handle the error
         pass
 
-# Call this when the module is imported
-_handle_uv_project_early()
-
 
 @django_simple_deploy.hookimpl
 def dsd_get_plugin_config():
     """Get platform-specific attributes needed by core."""
+    # Generate requirements.txt for uv projects before inspection
+    _ensure_requirements_txt_exists()
+    
     plugin_config = PluginConfig()
     return plugin_config
 

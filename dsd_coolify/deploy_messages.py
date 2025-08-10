@@ -51,12 +51,28 @@ def success_msg(log_output=""):
         --- Your project is now configured for deployment on Coolify Self-hosted ---
 
         The following files were created/modified:
-        - requirements.txt (auto-generated from your uv project)
+        - requirements.txt (auto-generated from your uv project if applicable)
         - Dockerfile (optimized for Django + Coolify)
         - .dockerignore (excludes unnecessary files)
         - settings.py (added production configurations)
+        - pyproject.toml (deployment dependencies added via uv for uv projects)
 
-        To deploy your project, you will need to:
+        To deploy your project:
+        
+        Option 1 - Automatic deployment (recommended):
+        Run the deploy command with --automate-all:
+            $ python manage.py deploy --automate-all
+        
+        This will automatically:
+        - Create the application in Coolify via API
+        - Trigger the initial deployment
+        - Commit all changes
+        
+        Make sure to set these environment variables:
+        - COOLIFY_URL: Your Coolify instance URL (e.g., https://coolify.example.com)
+        - COOLIFY_TOKEN: Your API token from Coolify (Keys & Tokens > API tokens)
+        
+        Option 2 - Manual deployment:
         - Commit the changes made in the configuration process:
             $ git status
             $ git add .
@@ -70,10 +86,11 @@ def success_msg(log_output=""):
             - SECRET_KEY: A secure Django secret key
             - DATABASE_URL: Your PostgreSQL database URL (if using external DB)
             - DEBUG: false (for production)
-        - As you develop your project further:
-            - Make local changes
-            - Commit your local changes  
-            - Push to your repository - Coolify will automatically redeploy
+        
+        For ongoing development:
+        - Make local changes
+        - Commit your local changes  
+        - Push to your repository - Coolify will automatically redeploy
     """
     )
 
@@ -93,21 +110,28 @@ def success_msg_automate_all(deployed_url):
     msg = dedent(
         f"""
 
-        --- Your project should now be deployed on Coolify Self-hosted ---
+        --- Your project has been deployed on Coolify Self-hosted ---
 
-        Your Django application has been configured and committed to Git.
-        - You can visit your project at {deployed_url}
-        - The following files were added/modified:
+        Your Django application has been automatically configured and deployed!
+        - Application URL: {deployed_url}
+        - The following files were created/modified:
+            * requirements.txt - Auto-generated from your uv project
+            * pyproject.toml - Deployment dependencies added via uv
             * Dockerfile - Container configuration for your Django app
             * .dockerignore - Files to exclude from the container
-            * requirements.txt - Updated with deployment dependencies
             * settings.py - Modified with production settings
 
+        What happened automatically:
+        1. ✅ Project files configured for Coolify deployment
+        2. ✅ All changes committed to Git
+        3. ✅ Changes pushed to your repository
+        4. ✅ Application created in Coolify via API
+        5. ✅ Deployment triggered and completed
+
         Next steps:
-        1. Push your changes to your Git repository
-        2. In Coolify, create a new application and connect it to your repository
-        3. Set environment variables (SECRET_KEY, DATABASE_URL, etc.)
-        4. Coolify will build and deploy your application automatically
+        1. Visit your live application at the URL above
+        2. Set up environment variables if needed (SECRET_KEY, DATABASE_URL, etc.)
+        3. Monitor the deployment in your Coolify dashboard
 
         For future deployments, just push changes to your repository!
     """
