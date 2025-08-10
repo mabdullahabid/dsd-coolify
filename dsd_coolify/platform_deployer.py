@@ -43,7 +43,7 @@ Add a set of requirements:
         plugin_utils.add_packages(requirements)
 """
 
-import sys, os, re, json
+import sys, os, re, json, subprocess
 from pathlib import Path
 
 from django.utils.safestring import mark_safe
@@ -102,7 +102,6 @@ class PlatformDeployer:
     def _prep_automate_all(self):
         """Take any further actions needed if using automate_all."""
         pass
-
 
     def _conclude_automate_all(self):
         """Finish automating the push to Coolify Self-hosted.

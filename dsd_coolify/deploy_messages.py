@@ -50,6 +50,12 @@ def success_msg(log_output=""):
         f"""
         --- Your project is now configured for deployment on Coolify Self-hosted ---
 
+        The following files were created/modified:
+        - requirements.txt (auto-generated from your uv project)
+        - Dockerfile (optimized for Django + Coolify)
+        - .dockerignore (excludes unnecessary files)
+        - settings.py (added production configurations)
+
         To deploy your project, you will need to:
         - Commit the changes made in the configuration process:
             $ git status
